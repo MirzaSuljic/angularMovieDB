@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieDataService } from 'src/app/service/movie-data.service';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-tv-show',
@@ -16,7 +15,6 @@ export class TvShowComponent implements OnInit {
 
   constructor(private movieDataService: MovieDataService,
               public route: ActivatedRoute,
-              private location: Location,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -29,7 +27,6 @@ export class TvShowComponent implements OnInit {
   BtnPrevious() {
 
     this.router.navigate([''], { queryParams: { selectedTab: '1' } });
-    // this.location.back();
     }
 
 }

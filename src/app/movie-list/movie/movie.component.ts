@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieDataService } from 'src/app/service/movie-data.service';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Location } from '@angular/common';
 
 
 
@@ -19,8 +17,6 @@ export class MovieComponent implements OnInit {
 
   constructor(private movieDataService: MovieDataService,
               public route: ActivatedRoute,
-              private sanitizer: DomSanitizer,
-              private location: Location,
               private router: Router ) {
                }
 
@@ -33,7 +29,6 @@ export class MovieComponent implements OnInit {
 
   BtnPrevious() {
     this.router.navigate([''], { queryParams: { selectedTab: '0' } });
-    // this.location.back();
     }
 
 }

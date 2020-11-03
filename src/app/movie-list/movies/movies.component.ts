@@ -13,10 +13,6 @@ import { MovieDataService } from 'src/app/service/movie-data.service';
 export class MoviesComponent implements OnInit {
   @Input() list_movies: any;
 
-  apiResponse: any;
-  searchQuery = '';
-  timer = null;
-  noResult = false;
 
   constructor(public restApi: MovieDataService){}
 
