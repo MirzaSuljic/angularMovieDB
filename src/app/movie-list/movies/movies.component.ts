@@ -18,19 +18,9 @@ export class MoviesComponent implements OnInit {
   timer = null;
   noResult = false;
 
-  // public loading: boolean = false;
-  // public results: Observable<any>;
-  // public searchField: FormControl;
-  constructor(public restApi: MovieDataService,
-              private router: Router,){
+  constructor(public restApi: MovieDataService){}
 
-  }
-
-  ngOnInit(): void {
-
-
-    
-   }
+  ngOnInit(): void {}
 
 
   }

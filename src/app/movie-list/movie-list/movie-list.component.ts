@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { fromEvent } from 'rxjs';
-import { debounce, debounceTime, filter, switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { fromEvent, pipe } from 'rxjs';
+import { debounce, debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 import { MovieDataService } from 'src/app/service/movie-data.service';
 
 
@@ -24,10 +24,79 @@ export class MovieListComponent implements OnInit, AfterViewInit {
   @ViewChild('siteSearch', {static: true}) inputElRef: ElementRef;
 
   constructor( private route: ActivatedRoute,
-              public restApi: MovieDataService) { }
+              public restApi: MovieDataService,
+              private router: Router) { }
+
 
   ngAfterViewInit(): void {
     fromEvent(this.inputElRef.nativeElement, 'keyup').pipe(
+        this.searchPipe()
+    ).subscribe((data:any) => {
+      if(this.selectedTab == 0) {
+        this.list_movies = data.results.sort(this.compare).slice(0, 10);
+      }
+      else {
+        this.list_tvShows = data.results.sort(this.compare).slice(0, 10);
+      }
+
+      this.setParams({query: this.inputElRef.nativeElement.value})
+
+    });
+  }
+
+  ngOnInit(): void {
+    this.restApi.getAllTvShows().subscribe((data:any) => {
+      this.apiResponse = data;
+      this.list_tvShows = data.results.sort(this.compare).slice(0, 10);
+    });
+
+    this.route.queryParams.pipe(
+        tap(params => {
+            if(params.hasOwnProperty('selectedTab')) 
+            {
+                this.selectedTab = params['selectedTab'];
+            }
+            
+            if(params.hasOwnProperty('query')) 
+            {
+                this.inputElRef.nativeElement.value = params['query'];
+            }
+        }),
+        switchMap((params) => {
+            if(params.hasOwnProperty('query')) {
+                if(this.selectedTab == 0) {
+                    return this.restApi.searchDb('movie', this.inputElRef.nativeElement.value);
+                  }
+                  else {
+                    return this.restApi.searchDb('tv', this.inputElRef.nativeElement.value);
+                }
+            }
+            else {
+                if(this.selectedTab == 0) {
+                    return this.restApi.getAllMovies();
+                  }
+                  else {
+                    return this.restApi.getAllTvShows();
+                }
+            }
+        })
+    ).subscribe((data:any) => {
+        if(this.selectedTab == 0) {
+          this.list_movies = data.results.sort(this.compare).slice(0, 10);
+        }
+        else {
+          this.list_tvShows = data.results.sort(this.compare).slice(0, 10);
+        }
+
+        if(this.inputElRef.nativeElement.value.length < 3) {
+            this.apiResponse = data;
+        }
+    });
+
+  }
+
+  private searchPipe() {
+    return pipe(
       debounceTime(1000),
       filter(() => {
         if(this.inputElRef.nativeElement.value.length >= 3) {
@@ -50,33 +119,15 @@ export class MovieListComponent implements OnInit, AfterViewInit {
           return this.restApi.searchDb('tv', this.inputElRef.nativeElement.value);
         }
       })
-    ).subscribe((data:any) => {
-      if(this.selectedTab == 0) {
-        this.list_movies = data.results.sort(this.compare).slice(0, 10);
-      }
-      else {
-        this.list_tvShows = data.results.sort(this.compare).slice(0, 10);
-      }
-    });
-  }
-
-  ngOnInit(): void {
-    this.restApi.getAllTvShows().subscribe((data:any) => {
-      this.apiResponse = data;
-      this.list_tvShows = data.results.sort(this.compare).slice(0, 10);
-    });
-
-    this.route.queryParams.subscribe(
-      params => {
-        if(params.hasOwnProperty('selectedTab')) 
-        {
-          this.selectedTab = params['selectedTab'];
-        }
-      }
-    )
-    
-    
-  }
+    );
+}
+private setParams(param) {
+  this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: param,
+      queryParamsHandling: 'merge'
+  });
+}
 
   compare( a, b ) {
     if ( a.vote_average > b.vote_average ){
@@ -87,8 +138,6 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     }
     return 0;
   }
-  
-  // objs.sort( compare );
   
   changeSelectedTab(index) {
     this.selectedTab = index;
@@ -120,8 +169,5 @@ export class MovieListComponent implements OnInit, AfterViewInit {
       }
     }
   }
-
-
-  
-  }
+}
   
