@@ -1,0 +1,24 @@
+<div class="tab-navigation-wrapper ">
+    <div class="tab-navigation tab-container ">
+        <ul class="nav nav-tabs nav-pills justify-content-between" role="tablist">
+            <li class="li-tab" [ngClass]="{'active': selectedTab == 0}" (click)="changeSelectedTab(0)">
+                <a class="nav-link ">Movies</a>
+            </li>
+            <li class="li-tab" [ngClass]="{'active': selectedTab == 1}" (click)="changeSelectedTab(1)">
+                <a class="nav-link ">Tv shows</a>
+            </li>
+        </ul>
+    </div>
+    <div class="search-box">
+        <label for="site-search">Search the movie:</label>
+        <input class="search" type="search" id="site-search" name="q" aria-label="Search through site content" #siteSearch>
+    </div>
+    <div class="tab-content">
+        <div *ngIf="selectedTab == 0" id="timesheets" role="tabpanel">
+            <app-movies [list_movies]="list_movies"></app-movies>
+        </div>
+        <div *ngIf="selectedTab == 1" id="schedule" role="tabpanel">
+            <app-tv-shows [list_tvShows]="list_tvShows"></app-tv-shows>
+        </div>
+    </div>
+</div>

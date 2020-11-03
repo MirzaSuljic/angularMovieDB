@@ -1,0 +1,13 @@
+
+<section class="movies">
+    <ng-container *ngFor="let item of list_tvShows">
+        <div class="child" [routerLink]="['tv-show',item.id]">
+            <div>
+                <img class="photo" src="https://image.tmdb.org/t/p/w185_and_h278_bestv2/{{item.poster_path}}" alt="">
+            </div>
+            <div class="movie-text">
+                <h4>{{item.name}}</h4>
+            </div>
+        </div>
+    </ng-container>
+</section>

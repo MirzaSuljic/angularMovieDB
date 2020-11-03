@@ -1,0 +1,51 @@
+<!-- <div class="details-bg" *ngIf="tvDetails.poster_path" [style.backgroundImage]="'url(https://image.tmdb.org/t/p/w500'+tvDetails.backdrop_path+')'"> -->
+
+<!-- <img class="photo" src="https://image.tmdb.org/t/p/w500'+tvDetails.backdrop_path+'" alt=""> -->
+<!-- <img src="https://image.tmdb.org/t/p/w500{{tvDetails.poster_path}}" class="details-poster" alt="{{tvDetails.title}}" /> -->
+
+<!-- <div>
+    <h2 class="movie-title">{{tvDetails.original_title}}
+        <span class="release-date">({{tvDetails.release_date|dateFormat:'YYYY'}})</span>
+    </h2>
+</div> -->
+
+<div class="btn-previous" (click)="BtnPrevious()">
+    <span>Back</span>
+</div>
+<div>
+    <section class="user-background">
+        <div>
+            <img src="https://image.tmdb.org/t/p/w500{{tvDetails.poster_path}}" class="details-poster" alt="{{tvDetails.title}}" />
+        </div>
+        <div class="ml-10 movie-content">
+            <div class="movie-title mt-10">
+                <label for="">Tv Show: </label>
+                <span>{{tvDetails.original_name}} </span>
+            </div>
+            <div class="release-date mt-10" *ngIf="tvDetails.last_episode_to_air">
+                <label for=""> Last Release Date: </label>
+                <span class="release-date">{{tvDetails.last_episode_to_air.air_date}}</span>
+            </div>
+            <div class="release-date mt-10" *ngIf="tvDetails.next_episode_to_air">
+                <label for=""> Next Release Date: </label>
+                <span class="release-date">{{tvDetails.next_episode_to_air.air_date}}</span>
+            </div>
+            <div class="season mt-10">
+                <label for=""> Seasons: </label>
+                <span class="">{{tvDetails.number_of_seasons}}</span>
+            </div>
+            <div class="season mt-10">
+                <label for=""> Episodes: </label>
+                <span class="">{{tvDetails.number_of_episodes}}</span>
+            </div>
+            <div class="overview mt-10">
+                <label for="">Overview: </label>
+                <p>
+                    {{tvDetails.overview}}
+                </p>
+            </div>
+            <div>
+                <label for="">Vote Average: </label>
+                <span class="">{{tvDetails.vote_average}}</span>
+            </div>
+        </div>

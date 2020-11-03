@@ -1,0 +1,40 @@
+<!-- <div class="details-bg" *ngIf="movieDetails.poster_path" [style.backgroundImage]="'url(https://image.tmdb.org/t/p/w500'+movieDetails.backdrop_path+')'"> -->
+
+<!-- <img class="photo" src="https://image.tmdb.org/t/p/w500'+movieDetails.backdrop_path+'" alt=""> -->
+<!-- <img src="https://image.tmdb.org/t/p/w500{{movieDetails.poster_path}}" class="details-poster" alt="{{movieDetails.title}}" /> -->
+
+<!-- <div>
+    <h2 class="movie-title">{{MovieDetails.original_title}}
+        <span class="release-date">({{MovieDetails.release_date|dateFormat:'YYYY'}})</span>
+    </h2>
+</div> -->
+<div class="btn-previous" (click)="BtnPrevious()">
+    <span>Back</span>
+</div>
+
+<div>
+    <section class="user-background">
+        <div>
+            <img src="https://image.tmdb.org/t/p/w500{{movieDetails.poster_path}}" class="details-poster" alt="{{movieDetails.title}}" />
+        </div>
+        <div class=" ml-10 movie-content">
+            <div class="movie-title mt-10">
+                <label for="">Movie: </label>
+                <span>{{movieDetails.original_title}} </span>
+            </div>
+            <div class="release-date mt-10">
+                <label for="">Release Date: </label>
+                <span class="release-date">{{movieDetails.release_date}}</span>
+            </div>
+            <div class="overview mt-10">
+                <label for="">Overview: </label>
+                <p>
+                    {{movieDetails.overview}}
+                </p>
+            </div>
+            <div>
+                <label for="">Vote Average: </label>
+                <span class="">{{movieDetails.vote_average}}</span>
+            </div>
+        </div>
+    </section>
